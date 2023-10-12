@@ -9,14 +9,6 @@ from highlight_text import fig_text
 import data_proc as data
 import matplotlib.colors as mcolors
 
-#################################################################################################################################
-#################################################################################################################################
-#################################################################################################################################
-#################################################################################################################################
-print('*********************************************************')
-print('Checkpoint plot_player_comparison_per_90')
-print('*********************************************************')
-
 def plot_player_comparison_per_90(df, player_of_interest, mins):
     # Get the position of the player of interest
     player_position = df[df['Player'] == player_of_interest]['Pos'].values[0]
@@ -55,7 +47,6 @@ def plot_player_comparison_per_90(df, player_of_interest, mins):
 
         # Sort the players by npxG+xAG_per_90 in descending order and take the top 5
         top_players = df_club.sort_values('npxG+xAG_per_90', ascending=False).head(5)
-        print(top_players)
 
         # Determine the color of the bars
         bar_colors = ['red' if player == player_of_interest else plt.cm.Greens(val/max_value) for player, val in zip(top_players['Player'], top_players['npxG+xAG_per_90'])]
@@ -81,10 +72,6 @@ def plot_player_comparison_per_90(df, player_of_interest, mins):
     fig.tight_layout(pad=3.0)
 
     return fig
-
-print('*********************************************************')
-print('Checkpoint plot_player_scatter')
-print('*********************************************************')
 
 def plot_player_scatter(df, player_of_interest, min_minutes):
     # Get the position of the player of interest
@@ -197,10 +184,6 @@ def plot_player_scatter(df, player_of_interest, min_minutes):
     return plt.gcf()  # Return the current figure
 
 
-print('*********************************************************')
-print('Checkpoint plot_player_scatter')
-print('*********************************************************')
-
 def plot_player_scatter_additional(df, player_of_interest, min_minutes, field1, field2):
     # Get the position of the player of interest
     player_position = df[df['Player'] == player_of_interest]['Pos'].values[0]
@@ -289,10 +272,6 @@ def plot_player_scatter_additional(df, player_of_interest, min_minutes, field1, 
     return plt.gcf()  # Return the current figure
 
 
-print('*********************************************************')
-print('Checkpoint top xg xa')
-print('*********************************************************')
-
 def top_xa_xg(df, player_of_interest, min_minutes):
 
     # Get the position of the player of interest
@@ -373,9 +352,6 @@ def swarm_plot(df, player_of_interest):
     plt.tight_layout()
     return plt.gcf()  # Return the current figure
 
-print('*********************************************************')
-print('Checkpoint shot_quality_team')
-print('*********************************************************')
 
 def shot_quality_team(df, team_selected): #, team):
 
@@ -464,14 +440,6 @@ def shot_quality_team(df, team_selected): #, team):
     return plt.gcf()  # Return the current figure
 
 
-
-
-
-
-
-print('*********************************************************')
-print('Checkpoint plot_team_scatter')
-print('*********************************************************')
 
 def plot_team_scatter(df, team):
     # Set the size of the figure
@@ -565,9 +533,6 @@ def plot_team_scatter(df, team):
 
 #     return plt.gcf()
 
-print('*********************************************************')
-print('Checkpoint radar_chart_player')
-print('*********************************************************')
 
 def radar_chart_player(df, player_of_interest, attributes, attribute_type):
     player_position = df[df['Player'] == player_of_interest]['Pos'].values[0]
@@ -608,18 +573,6 @@ def radar_chart_player(df, player_of_interest, attributes, attribute_type):
     plt.title(f'{player_of_interest} - {attribute_type} Attribute Type',  size=20, pad=20, fontweight = 'bold')
 
     return plt.gcf()
-
-
-
-
-
-
-
-
-
-print('*********************************************************')
-print('Checkpoint player_bars')
-print('*********************************************************')
 
 
 def player_bars(df, player_of_interest):
@@ -698,9 +651,6 @@ def player_bars(df, player_of_interest):
 
     return plt.gcf()
 
-print('*********************************************************')
-print('Checkpoint display_player_info')
-print('*********************************************************')
 
 def display_player_info(df, player_of_interest):
     # df_reset = df.reset_index(drop=True)
@@ -734,10 +684,6 @@ def display_player_info(df, player_of_interest):
     return info_str
 
 
-print('*********************************************************')
-print('Checkpoint age_histogram')
-print('*********************************************************')
-
 def age_histogram(df, team):
     # Create a new figure and axes
     fig, ax1 = plt.subplots(figsize=(14,6))
@@ -768,10 +714,6 @@ def age_histogram(df, team):
 
     return plt.gcf()
 
-
-print('*********************************************************')
-print('Checkpoint teams_xg_xa_trend')
-print('*********************************************************')
 
 def teams_xg_xa_trend(df, team):
     fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(14,20))
@@ -848,10 +790,6 @@ def teams_xg_xa_trend(df, team):
     return plt.gcf()
 
 
-print('*********************************************************')
-print('Checkpoint individual_team_rollingxg')
-print('*********************************************************')
-
 def individual_team_rollingxg(df, team):
     df = df[df['team']==team]
     df = df.reset_index(drop=True)
@@ -919,9 +857,6 @@ def plot_fixture_difficulty(team, window = 4):
 
     return fig
 
-print('*********************************************************')
-print('Checkpoint fixture_heatmap')
-print('*********************************************************')
 
 def fixture_heatmap(current_gameweek = 1, match_num = 6):
     # Function to compute the correct average rank for a team's fixtures
@@ -1020,13 +955,6 @@ def fixture_heatmap(current_gameweek = 1, match_num = 6):
 #################################################################################################################################
 #################################################################################################################################
 #################################################################################################################################
-
-###TEST
-
-print('*********************************************************')
-print('Checkpoint plotly_team_scatter')
-print('*********************************************************')
-
 def plotly_team_scatter(df, team):
     colors = ['red' if squad == team else 'green' for squad in df['Squad']]
 
@@ -1100,10 +1028,6 @@ def plotly_team_scatter(df, team):
 
     return fig
 
-print('*********************************************************')
-print('Checkpoint individual_team_rollingxg_plotly')
-print('*********************************************************')
-
 def individual_team_rollingxg_plotly(df, team, start_date, end_date):
     df = df[df['team'] == team]
     df = df.reset_index(drop=True)
@@ -1135,9 +1059,6 @@ def individual_team_rollingxg_plotly(df, team, start_date, end_date):
 
     return plt.gcf()
 
-print('*********************************************************')
-print('Checkpoint player_contributions')
-print('*********************************************************')
 
 # def player_contributions(player,seasons):
 #     import data_proc as data
