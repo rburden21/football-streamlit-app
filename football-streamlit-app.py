@@ -229,7 +229,7 @@ def page_two():
     fig81 = gp.plot_fixture_difficulty(team_of_interest, window = 4)
     st.pyplot(fig81)
 
-    styled_df = gp.fixture_heatmap(current_gameweek = 8, match_num = 10)
+    styled_df = gp.fixture_heatmap(current_gameweek = 9, match_num = 10)
     st.dataframe(styled_df)
 
     fig6 = gp.age_histogram(df_player, team_of_interest)
