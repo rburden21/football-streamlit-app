@@ -134,7 +134,8 @@ def fixtures_data(team, window=4):
     fixtures_df = pd.read_sql_query('SELECT * FROM fixtures', conn)
     conn.close()
 
-    df = pd.read_csv('team_ranks.csv')
+    data_path = os.path.join(current_directory + folder_raw)
+    df = pd.read_csv(data_path + '/team_ranks.csv')
     df = df.sort_values('rank')
 
     team_mapping = {'Wolverhampton': 'Wolves'} #wolves is a specific case
@@ -176,7 +177,8 @@ def fixtures_data_overall():
     fixtures_df = pd.read_sql_query('SELECT * FROM fixtures', conn)
     conn.close()
 
-    df = pd.read_csv('team_ranks.csv')
+    data_path = os.path.join(current_directory + folder_raw)
+    df = pd.read_csv(data_path + '/team_ranks.csv')
 
     team_mapping = {'Wolverhampton': 'Wolves'} #wolves is a specific case
     df['name'] = df['name'].replace(team_mapping)
