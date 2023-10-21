@@ -1049,6 +1049,41 @@ def individual_team_rollingxg_plotly(df, team, start_date, end_date):
 
     return plt.gcf()
 
+def plot_tables_exp_act(df):
+
+    teams = df['team'].unique().tolist()
+
+    actual_positions = df['Rk'].unique().tolist()
+    expected_positions = df['Rank'].unique().tolist() 
+
+    # Reverse the lists
+    teams = teams[::-1]
+    actual_positions = actual_positions[::-1]
+    expected_positions = expected_positions[::-1]
+
+    # Create a scatter plot
+    fig, ax = plt.subplots(figsize=(10, 12))
+
+    # Plot actual positions (in red) and expected positions (in yellow)
+    ax.scatter(actual_positions, teams, color='green', s=300, label="Actual Position")
+    ax.scatter(expected_positions, teams, color='red', s=300, label="Expected Position")
+
+    # Draw arrows between actual and expected positions
+    for team, actual, expected in zip(teams, actual_positions, expected_positions):
+        ax.annotate("", xy=(expected, team), xytext=(actual, team),
+                    arrowprops=dict(arrowstyle="->", lw=1.5))
+        ax.text(actual, team, str(actual), color='white', ha='center', va='center', weight='bold')
+        ax.text(expected, team, str(expected), color='black', ha='center', va='center', weight='bold')
+
+    # Set labels, title and adjust x-axis
+    ax.set_xlabel("Position")
+    ax.set_title("Actual vs Expected Positions (EPL 2023-24)")
+    ax.set_xlim(0, 21)  # Set x-axis limits from 1 to 20
+    ax.legend(loc="upper right")
+
+    plt.tight_layout()
+    
+    return plt.gcf() 
 
 # def player_contributions(player,seasons):
 #     import data_proc as data

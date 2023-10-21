@@ -44,6 +44,7 @@ df_player_archive = data.players_archive
 df_teams = data.merged_df_teams
 df_teams_indvidual = data.df_individual
 df_teams_attacking = data.team_shooting_df
+df_teams_tables = data.df_table_exp_act
 
 # df_player = df_player.reset_index(drop=True)
 df_player = df_player.drop(columns=['index'])
@@ -211,6 +212,9 @@ def page_two():
 
     fig5 = gp.plot_team_scatter(df_teams, team_of_interest)
     st.pyplot(fig5)
+
+    fig511 = gp.plot_tables_exp_act(df_teams_tables)
+    st.pyplot(fig511)
 
     fig501 = gp.shot_quality_team(df_teams_attacking, team_of_interest) #, team_of_interest)
     st.pyplot(fig501)

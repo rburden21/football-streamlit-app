@@ -188,6 +188,10 @@ def fixtures_data_overall():
     fixtures_merged = pd.merge(fixtures_merged, df, how='left', left_on='Away', right_on='name')
     return fixtures_merged
 
+# Tables - expected and actual
+table_path = os.path.join(current_directory + folder_raw)
+df_table_exp_act = pd.read_csv(table_path + '/tables_expected_actual.csv')
+
 # Updates player names in fbref data to fpl names if they are there
 
 # 
