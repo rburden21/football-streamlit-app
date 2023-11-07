@@ -91,7 +91,7 @@ def page_one():
         'Minimum minutes', 
         min_value=0, 
         max_value=int(data.players_archive['Min'].max()), 
-        value=100,  # initial value
+        value=400,  # initial value
         step=100
         )
 
@@ -233,7 +233,7 @@ def page_two():
     fig81 = gp.plot_fixture_difficulty(team_of_interest, window = 4)
     st.pyplot(fig81)
 
-    styled_df = gp.fixture_heatmap(current_gameweek = 11, match_num = 8)
+    styled_df = gp.fixture_heatmap(current_gameweek = 12, match_num = 8)
     st.dataframe(styled_df)
 
     fig6 = gp.age_histogram(df_player, team_of_interest)
