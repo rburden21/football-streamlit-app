@@ -45,6 +45,7 @@ df_teams = data.merged_df_teams
 df_teams_indvidual = data.df_individual
 df_teams_attacking = data.team_shooting_df
 df_teams_tables = data.df_table_exp_act
+df_predicted_data = data.df_predicted_goals_all_fixtures
 
 # df_player = df_player.reset_index(drop=True)
 df_player = df_player.drop(columns=['index'])
@@ -209,6 +210,9 @@ def page_two():
 
     # Display the dataframe
     # st.dataframe(df_individual[df_individual['team']==team_of_interest])
+
+    fig520 = gp.predicted_data(df_predicted_data, team_of_interest)
+    st.pyplot(fig520)    
 
     fig5 = gp.plot_team_scatter(df_teams, team_of_interest)
     st.pyplot(fig5)

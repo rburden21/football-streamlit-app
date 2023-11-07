@@ -192,6 +192,13 @@ def fixtures_data_overall():
 table_path = os.path.join(current_directory + folder_raw)
 df_table_exp_act = pd.read_csv(table_path + '/tables_expected_actual.csv')
 
+
+# Bring in the predicted data
+current_dir = os.getcwd()
+new_directory = os.path.join(current_dir,"data", "raw_files")
+df_predicted_goals_all_fixtures = pd.read_csv(new_directory + '/predicted_data.csv')
+
+
 # Updates player names in fbref data to fpl names if they are there
 
 # 

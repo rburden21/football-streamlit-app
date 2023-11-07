@@ -8,6 +8,8 @@ import seaborn as sns
 from highlight_text import fig_text
 import data_proc as data
 import matplotlib.colors as mcolors
+import seaborn as sns
+import numpy as np
 
 def plot_player_comparison_per_90(df, player_of_interest, mins):
     # Get the position of the player of interest
@@ -1082,8 +1084,105 @@ def plot_tables_exp_act(df):
     ax.legend(loc="upper right")
 
     plt.tight_layout()
-    
+
     return plt.gcf() 
+
+def predicted_data(df, team):
+    # Parameters
+    team = team
+    start_week = 12
+    end_week = start_week + 9
+
+    # Bring in the predicted data
+    df_predicted_goals_all_fixtures = df
+
+    # Select rows for the team selected within the gameweek range
+    df_selected = df_predicted_goals_all_fixtures[
+        ((df_predicted_goals_all_fixtures['Home'] == team) | (df_predicted_goals_all_fixtures['Away'] == team)) &
+        (df_predicted_goals_all_fixtures['Week'].between(start_week, end_week))]
+
+    # Get teams home and away data
+    df_selected_home = df_selected[df_selected['Home'] == team].set_index('Week')
+    df_selected_away = df_selected[df_selected['Away'] == team].set_index('Week')
+
+    df_selected_home['Predicted Goals (Home)'] = df_selected_home['Predicted Goals (Home)'].round(1)
+    df_selected_home['Predicted Goals (Away)'] = df_selected_home['Predicted Goals (Away)'].round(1)
+    df_selected_away['Predicted Goals (Home)'] = df_selected_away['Predicted Goals (Home)'].round(1)
+    df_selected_away['Predicted Goals (Away)'] = df_selected_away['Predicted Goals (Away)'].round(1)
+
+    # Set up predicted goals scored for each game week
+    predicted_goals_scored = []
+    opponents_list = []
+    for week in range(start_week, end_week + 1):
+        if week in df_selected_home.index:
+            predicted_goals_scored.append(df_selected_home.loc[week, 'Predicted Goals (Home)'])
+            opponents_list.append(df_selected_home.loc[week, 'Away'])
+        elif week in df_selected_away.index:
+            predicted_goals_scored.append(df_selected_away.loc[week, 'Predicted Goals (Away)'])
+            opponents_list.append(df_selected_away.loc[week, 'Home'])
+        else:
+            predicted_goals_scored.append(None)
+            opponents_list.append("No Match")
+
+    # Set up predicted goals conceded for each game week
+    predicted_goals_conceded = []
+    opponents_list = [] 
+    for week in range(start_week, end_week + 1):
+        if week in df_selected_home.index:
+            predicted_goals_conceded.append(df_selected_home.loc[week, 'Predicted Goals (Away)'])
+            opponents_list.append(df_selected_home.loc[week, 'Away'])
+        elif week in df_selected_away.index:
+            predicted_goals_conceded.append(df_selected_away.loc[week, 'Predicted Goals (Home)'])
+            opponents_list.append(df_selected_away.loc[week, 'Home'])
+        else:
+            predicted_goals_conceded.append(None)
+            opponents_list.append("No Match")
+
+    # Set up clean sheet percentages for each game week
+    clean_sheet_pct = []
+    opponents_list = []
+    for week in range(start_week, end_week + 1):
+        if week in df_selected_home.index:
+            clean_sheet_pct.append(df_selected_home.loc[week, 'Home Clean Sheet %'])
+            opponents_list.append(df_selected_home.loc[week, 'Away'])
+        elif week in df_selected_away.index:
+            clean_sheet_pct.append(df_selected_away.loc[week, 'Away Clean Sheet %'])
+            opponents_list.append(df_selected_away.loc[week, 'Home'])
+        else:
+            clean_sheet_pct.append(None)
+            opponents_list.append("No Match")
+
+    # Create dataframes for each of the rows needed
+    df_goals_scored = pd.DataFrame(predicted_goals_scored, index=opponents_list, columns=['Predicted Goals Scored']).transpose()
+    df_goals_conceded = pd.DataFrame(predicted_goals_conceded, index=opponents_list, columns=['Predicted Goals Conceded']).transpose()
+    df_cleansheets_pct = pd.DataFrame(clean_sheet_pct, index=opponents_list, columns=['Predicted Clean Sheet %']).transpose()
+
+    # Plot the heatmap
+    plt.figure(figsize=(14, 4)) 
+
+    # 1st plot
+    plt.subplot(3, 1, 1)
+    sns.heatmap(df_goals_scored, annot=True, cmap="Greens", cbar=False, linewidths=.5)
+    plt.xticks([]) 
+    plt.yticks(rotation=0, fontsize=12)
+    plt.title(f'Predicted Data For {team} (Gameweeks {start_week} to {end_week})')
+
+    # 2nd plot
+    plt.subplot(3, 1, 2) 
+    sns.heatmap(df_goals_conceded, annot=True, cmap="Greens", cbar=False, linewidths=.5)
+    plt.xticks([]) 
+    plt.yticks(rotation=0, fontsize=12)
+
+    # 3rd plot
+    plt.subplot(3, 1, 3)
+    sns.heatmap(df_cleansheets_pct, annot=True, cmap="Greens", cbar=False, linewidths=.5)
+    plt.xticks(ticks=np.arange(0.5, len(opponents_list)), labels=opponents_list, rotation=45, ha='right', fontsize=10)
+    plt.yticks(rotation=0, fontsize=12)
+
+    plt.tight_layout(h_pad=0.1)
+
+    return plt.gcf() 
+
 
 # def player_contributions(player,seasons):
 #     import data_proc as data
