@@ -1064,7 +1064,7 @@ def plot_tables_exp_act(df):
     expected_positions = expected_positions[::-1]
 
     # Create a scatter plot
-    fig, ax = plt.subplots(figsize=(10, 12))
+    fig, ax = plt.subplots(figsize=(10, 8))
 
     # Plot actual positions (in red) and expected positions (in yellow)
     ax.scatter(actual_positions, teams, color='green', s=300, label="Actual Position")
@@ -1087,10 +1087,10 @@ def plot_tables_exp_act(df):
 
     return plt.gcf() 
 
-def predicted_data(df, team):
+def predicted_data(df, team, start_week):
     # Parameters
     team = team
-    start_week = 12
+    start_week = start_week
     end_week = start_week + 9
 
     # Bring in the predicted data

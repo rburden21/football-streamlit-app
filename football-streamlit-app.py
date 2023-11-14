@@ -22,6 +22,8 @@ axes_settings = {
 
 plt.rc("axes", **axes_settings)
 
+start_week = 13
+
 gen_attributes = ['G-PK','npxG','Sh','Ast','xAG','npxG+xAG', 'Shot Creating Actions','Progressive Passes', 'PrgR']
 
 def_attributes = ['Tackles Won', 'Dribblers Tackled', 'Dribblers Tackled Pct', 'Blocks', 'Shots Blocked', 'Passes Blocked',
@@ -79,7 +81,6 @@ def page_one():
     # Inside each column, you can use st.image to add an image and st.button to add a button
     with tab1:
         st.header("Player Analysis")
-        # Code to execute when 'Analysis' button is clicked
         data_container1 = st.container()
         data_container2 = st.container()
 
@@ -91,13 +92,13 @@ def page_one():
                 st.text(player_info)
             with container2:
                 fig1 = gp.radar_chart_player(df_player, player_of_interest, gen_attributes, 'General')
-                st.pyplot(fig1)  # Assume fig1 is the figure for the scatter plot
+                st.pyplot(fig1) 
 
     with tab2:
         st.header("Scatter Plots Analysis")
 
         fig2 = gp.plot_player_scatter(df_player, player_of_interest, min_minutes)
-        st.pyplot(fig2)  # Assume fig1 is the figure for the scatter plot
+        st.pyplot(fig2) 
 
 
         field1_list = ['npxG', 'xAG']
@@ -159,7 +160,7 @@ def page_two():
     with tab2:
         st.header("Overal Team Data")  
     
-        styled_df = gp.fixture_heatmap(current_gameweek = 13, match_num = 8)
+        styled_df = gp.fixture_heatmap(current_gameweek = start_week, match_num = 6)
         st.dataframe(styled_df)
 
         fig5 = gp.plot_team_scatter(df_teams, team_of_interest)
@@ -174,13 +175,13 @@ def page_two():
     with tab3:
         st.header("Predictive Data")
 
-        fig520 = gp.predicted_data(df_predicted_data, team_of_interest)
+        fig520 = gp.predicted_data(df_predicted_data, team_of_interest, start_week = start_week)
         st.pyplot(fig520)  
 
         fig511 = gp.plot_tables_exp_act(df_teams_tables)
         st.pyplot(fig511)
 
-        fig3001 = gp.predict_goals(df_predicted_data, start_week=13)
+        fig3001 = gp.predict_goals(df_predicted_data, start_week = start_week)
         st.pyplot(fig3001)
 
 pages = {
