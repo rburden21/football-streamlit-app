@@ -181,8 +181,26 @@ def page_two():
         fig511 = gp.plot_tables_exp_act(df_teams_tables)
         st.pyplot(fig511)
 
-        fig3001 = gp.predict_goals(df_predicted_data, start_week = start_week)
-        st.pyplot(fig3001)
+        tab31, tab32, tab33 = st.tabs(["Predicted Goals Scored", "Predicted Goals Conceded", "Predicted Clean Sheet %"])
+
+        with tab31:
+            st.header("Team Predicted Goals Scored")
+
+            fig3001 = gp.predict_goals(df_predicted_data, start_week = start_week)
+            st.pyplot(fig3001)
+
+        with tab32:
+            st.header("Team Predicted Goals Conceded")
+
+            fig3002 = gp.predict_goals_conceded(df_predicted_data, start_week = start_week)
+            st.pyplot(fig3002)
+
+        with tab33:
+            st.header("Team Predicted Clean Sheet %")
+
+            fig3002 = gp.predict_clean_sheets(df_predicted_data, start_week = start_week)
+            st.pyplot(fig3002)
+
 
 pages = {
     "Individual Player Statistics": page_one,

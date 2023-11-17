@@ -1184,13 +1184,6 @@ def predicted_data(df, team, start_week):
     return plt.gcf() 
 
 def predict_goals(df, start_week):
-    # # Bring in the predicted data
-    # current_dir = os.getcwd()
-    # new_directory = os.path.join(current_dir,"data", "raw_files")
-    # df_predicted_goals_all_fixtures = pd.read_csv(new_directory + '/predicted_data.csv')
-
-    # df = df_predicted_goals_all_fixtures
-
     # start_week = 13
     end_week = start_week + 7
 
@@ -1226,7 +1219,75 @@ def predict_goals(df, start_week):
 
     return plt.gcf()
 
+def predict_goals_conceded(df, start_week):
+    end_week = start_week + 7
 
+    # Filter for the weeks wanted
+    df = df[df['Week'].between(start_week, end_week)]
+    df = df.round(1)
+    teams = np.unique(df[['Home', 'Away']].values) 
+    goals_scored_pivot = pd.DataFrame(index=teams)
+
+    # Predicted goals for each team
+    for week in range(start_week, end_week):
+        goals_scored_pivot[week] = 0  # Initialise
+        week_games = df[df['Week'] == week]
+        for _, row in week_games.iterrows():
+            goals_scored_pivot.at[row['Home'], week] += row['Predicted Goals (Away)']
+            goals_scored_pivot.at[row['Away'], week] += row['Predicted Goals (Home)']
+
+    # Calculate the total predicted goals for each team
+    goals_scored_pivot['Total'] = goals_scored_pivot.sum(axis=1)
+
+    # Sort by the total (and remove)
+    goals_scored_pivot_sorted = goals_scored_pivot.sort_values('Total', ascending=True)
+    goals_scored_pivot_sorted = goals_scored_pivot_sorted.drop(columns='Total')
+
+    # Plot the heatmap
+    plt.figure(figsize=(12, 10))
+    sns.heatmap(goals_scored_pivot_sorted, annot=True, cmap="Greens", cbar=False, linewidths=1, linecolor='black')
+    plt.xticks(rotation=45)
+    plt.yticks(rotation=0)
+    plt.xlabel('Gameweek')
+    plt.ylabel('Team')
+    plt.title('Predicted Goals Conceded')
+
+    return plt.gcf()
+
+def predict_clean_sheets(df, start_week):
+    end_week = start_week + 7
+
+    # Filter for the weeks wanted
+    df = df[df['Week'].between(start_week, end_week)]
+    df = df.round(1)
+    teams = np.unique(df[['Home', 'Away']].values) 
+    goals_scored_pivot = pd.DataFrame(index=teams)
+
+    # Predicted goals for each team
+    for week in range(start_week, end_week):
+        goals_scored_pivot[week] = 0  # Initialise
+        week_games = df[df['Week'] == week]
+        for _, row in week_games.iterrows():
+            goals_scored_pivot.at[row['Home'], week] += row['Home Clean Sheet %']
+            goals_scored_pivot.at[row['Away'], week] += row['Away Clean Sheet %']
+
+    # Calculate the total predicted goals for each team
+    goals_scored_pivot['Total'] = goals_scored_pivot.sum(axis=1)
+
+    # Sort by the total (and remove)
+    goals_scored_pivot_sorted = goals_scored_pivot.sort_values('Total', ascending=False)
+    goals_scored_pivot_sorted = goals_scored_pivot_sorted.drop(columns='Total')
+
+    # Plot the heatmap
+    plt.figure(figsize=(12, 10))
+    sns.heatmap(goals_scored_pivot_sorted, annot=True, cmap="Greens", cbar=False, linewidths=1, linecolor='black')
+    plt.xticks(rotation=45)
+    plt.yticks(rotation=0)
+    plt.xlabel('Gameweek')
+    plt.ylabel('Team')
+    plt.title('Predicted Clean Sheet %')
+
+    return plt.gcf()
 
 # def player_contributions(player,seasons):
 #     import data_proc as data
