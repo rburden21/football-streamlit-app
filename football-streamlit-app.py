@@ -48,6 +48,8 @@ df_teams_indvidual = data.df_individual
 df_teams_attacking = data.team_shooting_df
 df_teams_tables = data.df_table_exp_act
 df_predicted_data = data.df_predicted_goals_all_fixtures
+df_weekly_data = data.df_weekly_fpl
+df_overall_data = data.df_overall_fpl
 
 # df_player = df_player.reset_index(drop=True)
 df_player = df_player.drop(columns=['index'])
@@ -76,7 +78,7 @@ def page_one():
         )
 
     # Define columns for layout
-    tab1, tab2, tab3 = st.tabs(["Analysis", "Scatter Plots", "Player Comparisons"])
+    tab1, tab2, tab3, tab4 = st.tabs(["Analysis", "Scatter Plots", "Player Comparisons", "FPL Data"])
 
     # Inside each column, you can use st.image to add an image and st.button to add a button
     with tab1:
@@ -126,6 +128,12 @@ def page_one():
 
         fig4 = gp.plot_player_comparison_per_90(df_player, player_of_interest, min_minutes)
         st.pyplot(fig4)
+
+    with tab4:
+        st.header("FPL Data")
+
+        fig400 = gp.weekly_points(df_weekly_data, df_overall_data, player_of_interest)
+        st.pyplot(fig400)
 
 def page_two():
     st.title("Team Statistics")

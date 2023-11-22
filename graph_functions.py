@@ -1289,6 +1289,49 @@ def predict_clean_sheets(df, start_week):
 
     return plt.gcf()
 
+
+def weekly_points(df_weekly, df_overall, name):
+
+    df_to_use = df_weekly[df_weekly['full_name'] == name]
+
+    player_info = df_overall[['full_name', 'pos_short', 'now_cost', 'total_points']]
+    player_info = player_info[player_info['full_name'] == name]
+    total_points = player_info['total_points'].values[0]
+    position = player_info['pos_short'].values[0]
+    cost = player_info['now_cost'].values[0]
+
+    points = df_to_use['total_points'].to_list()  
+    gameweeks = list(range(1, len(points) + 1))
+
+    # Create figure and plot space
+    fig, ax = plt.subplots(figsize=(12, 6))
+
+    ax.bar(gameweeks, points, color='green')
+
+    for i, pt in enumerate(points):
+        ax.text(i + 1, pt + 0.5, f"{pt} PTS", ha='center')
+
+    # Set labels and title
+    ax.set_ylabel('Points')
+    ax.set_title(f'Player Performance Across Gameweeks: {name} - £{cost}m - Total Points: {total_points} - Position: {position}')
+
+    # Set x-axis labels as game week numbers
+    ax.set_xticks(gameweeks)
+    ax.set_xticklabels(gameweeks)
+
+    # Set y-axis limit
+    max_points = max(points)
+    if min(points) < 0: 
+        min_points = min(points) - 2
+    else: min_points = 0
+
+    ax.set_ylim(min_points, max_points + 2)
+    ax.grid(True, which='both', linestyle='--', linewidth=0.5, alpha=0.2)
+
+    return plt.gcf()
+
+
+
 # def player_contributions(player,seasons):
 #     import data_proc as data
 

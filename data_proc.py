@@ -198,6 +198,24 @@ current_dir = os.getcwd()
 new_directory = os.path.join(current_dir,"data", "raw_files")
 df_predicted_goals_all_fixtures = pd.read_csv(new_directory + '/predicted_data.csv')
 
+# Bring in weekly fpl data
+current_dir = os.getcwd()
+new_directory = os.path.join(current_dir, "data", "databases")
+db_name = os.path.join(new_directory, 'fpl_data_weekly.db')
+table_name = 'general_data'
+conn = sqlite3.connect(db_name)
+df_weekly_fpl = pd.read_sql_query(f'SELECT * FROM {table_name}', conn)
+conn.close()
+
+# Bring in overal fpl data
+current_dir = os.getcwd()
+new_directory = os.path.join(current_dir, "data", "databases")
+db_name = os.path.join(new_directory, 'fpl_data_weekly.db')
+table_name = 'overall_data'
+conn = sqlite3.connect(db_name)
+df_overall_fpl = pd.read_sql_query(f'SELECT * FROM {table_name}', conn)
+conn.close()
+
 
 # Updates player names in fbref data to fpl names if they are there
 
