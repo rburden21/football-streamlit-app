@@ -1355,7 +1355,7 @@ def weekly_xg(df_weekly, df_overall, name):
     ax.plot(gameweeks, rolling_avg, color='red', marker='o', linestyle='-', linewidth=3, label='4 Game Rolling Avg')
 
     for i, pt in enumerate(weekly_xg):
-        ax.text(i + 1, pt + 0.5, f"{pt} xG", ha='center')
+        ax.text(i + 1, pt + 0.05, f"{pt} xG", ha='center')
 
     # Set labels and title
     ax.set_ylabel('Points')
@@ -1401,7 +1401,7 @@ def weekly_xA(df_weekly, df_overall, name):
     ax.plot(gameweeks, rolling_avg, color='red', marker='o', linestyle='-', linewidth=3, label='4 Game Rolling Avg')
 
     for i, pt in enumerate(weekly_xA):
-        ax.text(i + 1, pt + 0.5, f"{pt} xA", ha='center')
+        ax.text(i + 1, pt + 0.05, f"{pt} xA", ha='center')
 
     # Set labels and title
     ax.set_ylabel('Points')
@@ -1422,51 +1422,51 @@ def weekly_xA(df_weekly, df_overall, name):
 
     return plt.gcf()
 
-def weekly_transfers(df_weekly, df_overall, name):
+# def weekly_transfers(df_weekly, df_overall, name):
 
-    df_to_use = df_weekly[df_weekly['full_name'] == name]
+#     df_to_use = df_weekly[df_weekly['full_name'] == name]
 
-    player_info = df_overall[['full_name', 'pos_short', 'now_cost', 'total_points']]
-    player_info = player_info[player_info['full_name'] == name]
-    total_points = player_info['total_points'].values[0]
-    position = player_info['pos_short'].values[0]
-    cost = player_info['now_cost'].values[0]
+#     player_info = df_overall[['full_name', 'pos_short', 'now_cost', 'total_points']]
+#     player_info = player_info[player_info['full_name'] == name]
+#     total_points = player_info['total_points'].values[0]
+#     position = player_info['pos_short'].values[0]
+#     cost = player_info['now_cost'].values[0]
 
-    weekly_xA = df_to_use['expected_assists'].astype(float).to_list()
-    gameweeks = list(range(1, len(weekly_xA) + 1))
+#     weekly_xA = df_to_use['expected_assists'].astype(float).to_list()
+#     gameweeks = list(range(1, len(weekly_xA) + 1))
 
-    # rolling average
-    rolling_avg = df_to_use['expected_assists'].astype(float).rolling(window=4).mean()
+#     # rolling average
+#     rolling_avg = df_to_use['expected_assists'].astype(float).rolling(window=4).mean()
 
-    # Create figure and plot space
-    fig, ax = plt.subplots(figsize=(12, 6))
+#     # Create figure and plot space
+#     fig, ax = plt.subplots(figsize=(12, 6))
 
-    ax.bar(gameweeks, weekly_xA, color='green')
+#     ax.bar(gameweeks, weekly_xA, color='green')
 
-    # Plotting the rolling average as a line
-    ax.plot(gameweeks, rolling_avg, color='red', marker='o', linestyle='-', linewidth=3, label='4 Game Rolling Avg')
+#     # Plotting the rolling average as a line
+#     ax.plot(gameweeks, rolling_avg, color='red', marker='o', linestyle='-', linewidth=3, label='4 Game Rolling Avg')
 
-    for i, pt in enumerate(weekly_xA):
-        ax.text(i + 1, pt + 0.5, f"{pt} xA", ha='center')
+#     for i, pt in enumerate(weekly_xA):
+#         ax.text(i + 1, pt + 0.5, f"{pt} xA", ha='center')
 
-    # Set labels and title
-    ax.set_ylabel('Points')
-    ax.set_title(f'Player xA Across Gameweeks: {name} - £{cost}m - Total Points: {total_points} - Position: {position}')
+#     # Set labels and title
+#     ax.set_ylabel('Points')
+#     ax.set_title(f'Player xA Across Gameweeks: {name} - £{cost}m - Total Points: {total_points} - Position: {position}')
 
-    # Set x-axis labels as game week numbers
-    ax.set_xticks(gameweeks)
-    ax.set_xticklabels(gameweeks)
+#     # Set x-axis labels as game week numbers
+#     ax.set_xticks(gameweeks)
+#     ax.set_xticklabels(gameweeks)
 
-    # Set y-axis limit
-    max_points = max(max(weekly_xA), max(rolling_avg.dropna())) + 0.2
-    if min(weekly_xA) < 0: 
-        min_points = min(weekly_xA) - 1
-    else: min_points = 0
+#     # # Set y-axis limit
+#     # max_points = max(max(weekly_xA), max(rolling_avg.dropna())) + 0.2
+#     # if min(weekly_xA) < 0: 
+#     #     min_points = min(weekly_xA) 
+#     # else: min_points = 0
 
-    ax.set_ylim(min_points, max_points + 1)
-    ax.grid(True, which='both', linestyle='--', linewidth=0.5, alpha=0.2)
+#     # ax.set_ylim(min_points, max_points + 1)
+#     ax.grid(True, which='both', linestyle='--', linewidth=0.5, alpha=0.2)
 
-    return plt.gcf()
+#     return plt.gcf()
 
 
 def weekly_fpltransfers(df, name):
