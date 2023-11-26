@@ -1355,11 +1355,11 @@ def weekly_xg(df_weekly, df_overall, name):
     ax.plot(gameweeks, rolling_avg, color='red', marker='o', linestyle='-', linewidth=3, label='4 Game Rolling Avg')
 
     for i, pt in enumerate(weekly_xg):
-        ax.text(i + 1, pt + 0.5, f"{pt} PTS", ha='center')
+        ax.text(i + 1, pt + 0.5, f"{pt} xG", ha='center')
 
     # Set labels and title
     ax.set_ylabel('Points')
-    ax.set_title(f'Player Performance Across Gameweeks: {name} - £{cost}m - Total Points: {total_points} - Position: {position}')
+    ax.set_title(f'Player xG Across Gameweeks: {name} - £{cost}m - Total Points: {total_points} - Position: {position}')
 
     # Set x-axis labels as game week numbers
     ax.set_xticks(gameweeks)
@@ -1375,6 +1375,128 @@ def weekly_xg(df_weekly, df_overall, name):
     ax.grid(True, which='both', linestyle='--', linewidth=0.5, alpha=0.2)
 
     return plt.gcf()
+
+def weekly_xA(df_weekly, df_overall, name):
+
+    df_to_use = df_weekly[df_weekly['full_name'] == name]
+
+    player_info = df_overall[['full_name', 'pos_short', 'now_cost', 'total_points']]
+    player_info = player_info[player_info['full_name'] == name]
+    total_points = player_info['total_points'].values[0]
+    position = player_info['pos_short'].values[0]
+    cost = player_info['now_cost'].values[0]
+
+    weekly_xA = df_to_use['expected_assists'].astype(float).to_list()
+    gameweeks = list(range(1, len(weekly_xA) + 1))
+
+    # rolling average
+    rolling_avg = df_to_use['expected_assists'].astype(float).rolling(window=4).mean()
+
+    # Create figure and plot space
+    fig, ax = plt.subplots(figsize=(12, 6))
+
+    ax.bar(gameweeks, weekly_xA, color='green')
+
+    # Plotting the rolling average as a line
+    ax.plot(gameweeks, rolling_avg, color='red', marker='o', linestyle='-', linewidth=3, label='4 Game Rolling Avg')
+
+    for i, pt in enumerate(weekly_xA):
+        ax.text(i + 1, pt + 0.5, f"{pt} xA", ha='center')
+
+    # Set labels and title
+    ax.set_ylabel('Points')
+    ax.set_title(f'Player xA Across Gameweeks: {name} - £{cost}m - Total Points: {total_points} - Position: {position}')
+
+    # Set x-axis labels as game week numbers
+    ax.set_xticks(gameweeks)
+    ax.set_xticklabels(gameweeks)
+
+    # Set y-axis limit
+    max_points = max(max(weekly_xA), max(rolling_avg.dropna())) + 0.2
+    if min(weekly_xA) < 0: 
+        min_points = min(weekly_xA) - 1
+    else: min_points = 0
+
+    ax.set_ylim(min_points, max_points + 1)
+    ax.grid(True, which='both', linestyle='--', linewidth=0.5, alpha=0.2)
+
+    return plt.gcf()
+
+def weekly_transfers(df_weekly, df_overall, name):
+
+    df_to_use = df_weekly[df_weekly['full_name'] == name]
+
+    player_info = df_overall[['full_name', 'pos_short', 'now_cost', 'total_points']]
+    player_info = player_info[player_info['full_name'] == name]
+    total_points = player_info['total_points'].values[0]
+    position = player_info['pos_short'].values[0]
+    cost = player_info['now_cost'].values[0]
+
+    weekly_xA = df_to_use['expected_assists'].astype(float).to_list()
+    gameweeks = list(range(1, len(weekly_xA) + 1))
+
+    # rolling average
+    rolling_avg = df_to_use['expected_assists'].astype(float).rolling(window=4).mean()
+
+    # Create figure and plot space
+    fig, ax = plt.subplots(figsize=(12, 6))
+
+    ax.bar(gameweeks, weekly_xA, color='green')
+
+    # Plotting the rolling average as a line
+    ax.plot(gameweeks, rolling_avg, color='red', marker='o', linestyle='-', linewidth=3, label='4 Game Rolling Avg')
+
+    for i, pt in enumerate(weekly_xA):
+        ax.text(i + 1, pt + 0.5, f"{pt} xA", ha='center')
+
+    # Set labels and title
+    ax.set_ylabel('Points')
+    ax.set_title(f'Player xA Across Gameweeks: {name} - £{cost}m - Total Points: {total_points} - Position: {position}')
+
+    # Set x-axis labels as game week numbers
+    ax.set_xticks(gameweeks)
+    ax.set_xticklabels(gameweeks)
+
+    # Set y-axis limit
+    max_points = max(max(weekly_xA), max(rolling_avg.dropna())) + 0.2
+    if min(weekly_xA) < 0: 
+        min_points = min(weekly_xA) - 1
+    else: min_points = 0
+
+    ax.set_ylim(min_points, max_points + 1)
+    ax.grid(True, which='both', linestyle='--', linewidth=0.5, alpha=0.2)
+
+    return plt.gcf()
+
+
+def weekly_fpltransfers(df_weekly, name):
+
+    # Filter out the week with 0 transfers
+    df_filtered = df_weekly[df_weekly['transfers_in'] != 0]
+
+    # Function to format numbers as rounded to nearest thousand with 'k'
+    def format_k(value):
+        return f"{value // 1000}k" if value != 0 else '0'
+
+    fig, ax = plt.subplots(figsize=(12, 6))
+    ax.bar(df_filtered.index, df_filtered['transfers_in'], color='green', label='Transfers In')
+    ax.bar(df_filtered.index, df_filtered['transfers_out'], color='red', label='Transfers Out')
+
+    # Adding text for each bar
+    for idx, row in df_filtered.iterrows():
+        if row['transfers_in'] != 0:
+            ax.text(idx, row['transfers_in'], format_k(row['transfers_in']), ha='center', va='bottom')
+        if row['transfers_out'] != 0:
+            ax.text(idx, row['transfers_out'], format_k(row['transfers_out']), ha='center', va='top')
+
+    # Set labels and title
+    ax.set_xlabel('Week')
+    ax.set_ylabel('Number of Transfers')
+    ax.set_title(f'Transfers In and Out Per Week for {name}')
+    ax.legend()
+
+    return plt.gcf()
+
 
 # def player_contributions(player,seasons):
 #     import data_proc as data

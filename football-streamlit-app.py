@@ -141,6 +141,10 @@ def page_one():
         fig401 = gp.weekly_xg(df_weekly_data, df_overall_data, player_of_interest)
         st.pyplot(fig401)
 
+        fig402 = gp.weekly_fpltransfers(df_weekly_data, player_of_interest)
+        st.pyplot(fig402)
+        
+
 def page_two():
     st.title("Team Statistics")
 
