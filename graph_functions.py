@@ -1472,6 +1472,7 @@ def weekly_transfers(df_weekly, df_overall, name):
 def weekly_fpltransfers(df_weekly, name):
 
     # Filter out the week with 0 transfers
+    df_filtered = df_filtered[df_filtered['full_name'] == name]
     df_filtered = df_weekly[df_weekly['transfers_in'] != 0]
 
     # Function to format numbers as rounded to nearest thousand with 'k'
