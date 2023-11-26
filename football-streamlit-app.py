@@ -132,8 +132,14 @@ def page_one():
     with tab4:
         st.header("FPL Data")
 
+        st.text("Overall FPL Data")
+        st.dataframe(df_overall_data)
+
         fig400 = gp.weekly_points(df_weekly_data, df_overall_data, player_of_interest)
         st.pyplot(fig400)
+
+        fig401 = gp.weekly_xg(df_weekly_data, df_overall_data, player_of_interest)
+        st.pyplot(fig401)
 
 def page_two():
     st.title("Team Statistics")

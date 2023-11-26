@@ -1330,7 +1330,51 @@ def weekly_points(df_weekly, df_overall, name):
 
     return plt.gcf()
 
+def weekly_xg(df_weekly, df_overall, name):
 
+    df_to_use = df_weekly[df_weekly['full_name'] == name]
+
+    player_info = df_overall[['full_name', 'pos_short', 'now_cost', 'total_points']]
+    player_info = player_info[player_info['full_name'] == name]
+    total_points = player_info['total_points'].values[0]
+    position = player_info['pos_short'].values[0]
+    cost = player_info['now_cost'].values[0]
+
+    weekly_xg = df_to_use['expected_goals'].astype(float).to_list()
+    gameweeks = list(range(1, len(weekly_xg) + 1))
+
+    # rolling average
+    rolling_avg = df_to_use['expected_goals'].astype(float).rolling(window=4).mean()
+
+    # Create figure and plot space
+    fig, ax = plt.subplots(figsize=(12, 6))
+
+    ax.bar(gameweeks, weekly_xg, color='green')
+
+    # Plotting the rolling average as a line
+    ax.plot(gameweeks, rolling_avg, color='red', marker='o', linestyle='-', linewidth=3, label='4 Game Rolling Avg')
+
+    for i, pt in enumerate(weekly_xg):
+        ax.text(i + 1, pt + 0.5, f"{pt} PTS", ha='center')
+
+    # Set labels and title
+    ax.set_ylabel('Points')
+    ax.set_title(f'Player Performance Across Gameweeks: {name} - £{cost}m - Total Points: {total_points} - Position: {position}')
+
+    # Set x-axis labels as game week numbers
+    ax.set_xticks(gameweeks)
+    ax.set_xticklabels(gameweeks)
+
+    # Set y-axis limit
+    max_points = max(max(weekly_xg), max(rolling_avg.dropna())) + 0.2
+    if min(weekly_xg) < 0: 
+        min_points = min(weekly_xg) - 1
+    else: min_points = 0
+
+    ax.set_ylim(min_points, max_points + 1)
+    ax.grid(True, which='both', linestyle='--', linewidth=0.5, alpha=0.2)
+
+    return plt.gcf()
 
 # def player_contributions(player,seasons):
 #     import data_proc as data
