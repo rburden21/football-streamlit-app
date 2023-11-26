@@ -1469,17 +1469,21 @@ def weekly_transfers(df_weekly, df_overall, name):
     return plt.gcf()
 
 
-def weekly_fpltransfers(df_weekly, name):
-
+def weekly_fpltransfers(df, name):
     # Filter out the week with 0 transfers
-    df_filtered = df_weekly[df_weekly['full_name'] == name]
+    df_filtered = df[df['full_name'] == name]
     df_filtered = df_filtered[df_filtered['transfers_in'] != 0]
+
+    df_filtered['transfers_out'] = df_filtered['transfers_out'] * -1
 
     # Function to format numbers as rounded to nearest thousand with 'k'
     def format_k(value):
         return f"{value // 1000}k" if value != 0 else '0'
 
+    # Create figure and plot space
     fig, ax = plt.subplots(figsize=(12, 6))
+
+    # Plotting the transfers
     ax.bar(df_filtered.index, df_filtered['transfers_in'], color='green', label='Transfers In')
     ax.bar(df_filtered.index, df_filtered['transfers_out'], color='red', label='Transfers Out')
 
@@ -1494,6 +1498,8 @@ def weekly_fpltransfers(df_weekly, name):
     ax.set_xlabel('Week')
     ax.set_ylabel('Number of Transfers')
     ax.set_title(f'Transfers In and Out Per Week for {name}')
+
+    # Add legend
     ax.legend()
 
     return plt.gcf()
