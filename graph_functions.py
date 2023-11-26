@@ -1374,6 +1374,8 @@ def weekly_xg(df_weekly, df_overall, name):
     ax.set_ylim(min_points, max_points + 1)
     ax.grid(True, which='both', linestyle='--', linewidth=0.5, alpha=0.2)
 
+    ax.legend()
+
     return plt.gcf()
 
 def weekly_xA(df_weekly, df_overall, name):
@@ -1419,6 +1421,8 @@ def weekly_xA(df_weekly, df_overall, name):
 
     ax.set_ylim(min_points, max_points + 1)
     ax.grid(True, which='both', linestyle='--', linewidth=0.5, alpha=0.2)
+
+    ax.legend()
 
     return plt.gcf()
 
