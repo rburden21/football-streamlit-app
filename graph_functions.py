@@ -1476,6 +1476,10 @@ def weekly_fpltransfers(df, name):
 
     df_filtered['transfers_out'] = df_filtered['transfers_out'] * -1
 
+    transfers_in = df_filtered['transfers_in'].astype(float).to_list()
+    transfers_out = df_filtered['transfers_out'].astype(float).to_list()
+    gameweeks = list(range(1, len(transfers_in) + 1))
+
     # Function to format numbers as rounded to nearest thousand with 'k'
     def format_k(value):
         return f"{value // 1000}k" if value != 0 else '0'
@@ -1484,15 +1488,20 @@ def weekly_fpltransfers(df, name):
     fig, ax = plt.subplots(figsize=(12, 6))
 
     # Plotting the transfers
-    ax.bar(df_filtered.index, df_filtered['transfers_in'], color='green', label='Transfers In')
-    ax.bar(df_filtered.index, df_filtered['transfers_out'], color='red', label='Transfers Out')
+    ax.bar(gameweeks, transfers_in, color='green', label='Transfers In')
+    ax.bar(gameweeks, transfers_out, color='red', label='Transfers Out')
 
-    # Adding text for each bar
-    for idx, row in df_filtered.iterrows():
-        if row['transfers_in'] != 0:
-            ax.text(idx, row['transfers_in'], format_k(row['transfers_in']), ha='center', va='bottom')
-        if row['transfers_out'] != 0:
-            ax.text(idx, row['transfers_out'], format_k(row['transfers_out']), ha='center', va='top')
+    for i, pt in enumerate(transfers_in):
+        ax.text(i + 1, pt, format_k(pt), ha='center', va='bottom')
+    for i, pt in enumerate(transfers_out):
+        ax.text(i + 1, pt, format_k(pt), ha='center', va='top')
+
+    # # Adding text for each bar
+    # for idx, row in df_filtered.iterrows():
+    #     if row['transfers_in'] != 0:
+    #         ax.text(idx, row['transfers_in'], format_k(row['transfers_in']), ha='center', va='bottom')
+    #     if row['transfers_out'] != 0:
+    #         ax.text(idx, row['transfers_out'], format_k(row['transfers_out']), ha='center', va='top')
 
     # Set labels and title
     ax.set_xlabel('Week')
