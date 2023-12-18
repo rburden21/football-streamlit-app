@@ -102,6 +102,8 @@ def page_one():
         fig2 = gp.plot_player_scatter(df_player, player_of_interest, min_minutes)
         st.pyplot(fig2) 
 
+        fig222 = gp.latest_gameweek_data(df_weekly_data, player_of_interest)
+        st.pyplot(fig222)
 
         field1_list = ['npxG', 'xAG']
         field2_list = ['Sh','SoT','Touches (Att Pen)', 'Carries Into Final 3rd','Passes Into Final Third',
