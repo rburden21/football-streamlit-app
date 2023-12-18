@@ -1479,8 +1479,8 @@ def latest_gameweek_data(df, df_player, player_of_interest):
     player_xg_xa_latest = df_latest.groupby('full_name')[['expected_goals', 'expected_assists']].sum().reset_index()
 
     # Identifying the top players based on xG and xA
-    top_xg = player_xg_xa_latest.nlargest(15, 'expected_goals')
-    top_xa = player_xg_xa_latest.nlargest(15, 'expected_assists')
+    top_xg = player_xg_xa_latest.nlargest(10, 'expected_goals')
+    top_xa = player_xg_xa_latest.nlargest(10, 'expected_assists')
 
     # Highlighting a specific player, Jarrod Bowen
     player_data = player_xg_xa_latest[player_xg_xa_latest['full_name'] == player_of_interest]
@@ -1488,8 +1488,8 @@ def latest_gameweek_data(df, df_player, player_of_interest):
     # Create the scatter plot
     plt.figure(figsize=(10, 8))
     plt.scatter(player_xg_xa_latest['expected_assists'], player_xg_xa_latest['expected_goals'])
-    plt.scatter(top_xg['expected_assists'] , top_xg['expected_goals'], color='orange', label='Top 15 xG')
-    plt.scatter(top_xa['expected_assists'], top_xa['expected_goals'],  color='orange', label='Top 15 xA')
+    plt.scatter(top_xg['expected_assists'] , top_xg['expected_goals'], color='orange', label='Top 10 xG')
+    plt.scatter(top_xa['expected_assists'], top_xa['expected_goals'],  color='orange', label='Top 10 xA')
     plt.scatter(player_data['expected_assists'], player_data['expected_goals'], color='red', label='Jarrod Bowen')
 
     # Adding names to the highlighted points
