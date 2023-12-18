@@ -1460,12 +1460,19 @@ def weekly_fpltransfers(df, name):
     return plt.gcf()
 
 
-def latest_gameweek_data(df, player_of_interest):
+def latest_gameweek_data(df, df_player, player_of_interest):
     # Assign gameweeks & get last 6 gameweeks data
     df['gameweek'] = df.groupby('element').cumcount() + 1
     max_gameweeks = df.groupby('element')['gameweek'].transform('max')
     df_latest = df[(max_gameweeks - df['gameweek']) < 6]
  
+    # Get the position of the player of interest
+    player_position = df_player[df_player['Player'] == player_of_interest]['Pos'].values[0]
+    filtered_df = df_player[(df_player['Pos'] == player_position)].copy()
+
+    df_player_pos = filtered_df[['Player', 'Pos']]
+    df_latest = pd.merge(df_latest, df_player_pos, how='inner', left_on='full_name', right_on='Player')
+
     # Sort data
     df_latest['expected_goals'] = df_latest['expected_goals'].astype(float)
     df_latest['expected_assists'] = df_latest['expected_assists'].astype(float)
