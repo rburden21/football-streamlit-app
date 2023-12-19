@@ -1487,7 +1487,7 @@ def latest_gameweek_data(df, df_player, player_of_interest):
 
     # Create the scatter plot
     plt.figure(figsize=(10, 8))
-    plt.scatter(player_xg_xa_latest['expected_assists'], player_xg_xa_latest['expected_goals'])
+    plt.scatter(player_xg_xa_latest['expected_assists'], player_xg_xa_latest['expected_goals'], color='green')
     plt.scatter(top_xg['expected_assists'] , top_xg['expected_goals'], color='orange', label='Top 10 xG')
     plt.scatter(top_xa['expected_assists'], top_xa['expected_goals'],  color='orange', label='Top 10 xA')
     plt.scatter(player_data['expected_assists'], player_data['expected_goals'], color='red', label='Jarrod Bowen')
@@ -1511,6 +1511,38 @@ def latest_gameweek_data(df, df_player, player_of_interest):
     # Show plot with a grid for better readability
     plt.grid(True)
     return plt.gcf()
+
+def xg_differences_team(df):
+    
+    teams = df['Squad'].unique()
+    cols = ['Squad', 'npxG per 90_x','npxG per 90_y']
+    df = df[cols]
+    df['xG Difference'] = df['npxG per 90_x'] - df['npxG per 90_y']
+    df_sorted = df.sort_values('xG Difference', ascending=False)
+    sorted_teams = df_sorted['Squad'].values
+    sorted_xg_difference = df_sorted['xG Difference'].values
+
+    # Colors for the bars
+    colors = [plt.cm.RdYlGn(x) for x in np.linspace(0, 1, len(teams))]
+
+    plt.figure(figsize=(10, 8))
+    bars = plt.barh(sorted_teams[::-1], sorted_xg_difference[::-1], color=colors)
+
+    max_xg_diff = np.max(np.abs(sorted_xg_difference)) + 0.25
+
+    plt.xlim(-max_xg_diff, max_xg_diff)
+    plt.axvline(0, color='grey', linewidth=0.8, linestyle="--")
+    plt.title('Premier League 2023-2024\nTeam Comparison - xG Difference')
+    plt.xlabel('xG Difference')
+    plt.ylabel('Teams')
+
+    # Remove the spines
+    for spine in plt.gca().spines.values():
+        spine.set_visible(False)
+
+    return plt.gcf()
+
+
 
 
 # def player_contributions(player,seasons):

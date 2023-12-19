@@ -189,8 +189,11 @@ def page_two():
         fig5 = gp.plot_team_scatter(df_teams, team_of_interest)
         st.pyplot(fig5)
 
-        fig501 = gp.shot_quality_team(df_teams_attacking, team_of_interest) #, team_of_interest)
+        fig501 = gp.shot_quality_team(df_teams_attacking, team_of_interest)
         st.pyplot(fig501)
+
+        fig502 = gp.xg_differences_team(df_teams)
+        st.pyplot(fig502)
 
         fig7 = gp.teams_xg_xa_trend(df_teams,team_of_interest)
         st.pyplot(fig7)
