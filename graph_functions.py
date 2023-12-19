@@ -11,7 +11,7 @@ import matplotlib.colors as mcolors
 import seaborn as sns
 import numpy as np
 import matplotlib.pyplot as plt
-from mplsoccer import PyPizza, add_image, FontManager
+from mplsoccer import PyPizza
 
 def plot_player_comparison_per_90(df, player_of_interest, mins):
     # Get the position of the player of interest
@@ -1611,7 +1611,7 @@ def pizza_plot(df, player_of_interest):
     # plot pizza
     fig, ax = baker.make_pizza(
         values,                          # list of values
-        figsize=(12, 10),                # adjust the figsize according to your need
+        figsize=(10, 8),                # adjust the figsize according to your need
         color_blank_space="same",        # use the same color to fill blank space
         slice_colors=slice_colors,       # color for individual slices
         value_colors=text_colors,        # color for the value-text
