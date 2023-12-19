@@ -1578,7 +1578,7 @@ def pizza_plot(df, player_of_interest):
         "Ast": "Assists",
         "Shot Creating Actions": "Shot Creating\nActions",
         "Progressive Passes": "Progressive\nPasses",
-        "PrgR": "Progressive Passes\nReceieved",
+        "PrgR": "Progressive\nPasses Receieved",
         "Successful Take-Ons": "Successful\nTake-Ons",
         "Progressive Carries": "Progressive\nCarries",
         "Passes Recieved": "Passes\nRecieved",
@@ -1593,7 +1593,7 @@ def pizza_plot(df, player_of_interest):
     # value list
     values = percentile_values
 
-    slice_colors = ["#1A78CF"] * 8 + ["#FF9300"] * 5 + ["#D70232"] * 5
+    slice_colors = ["#1A78CF"] * 6 + ["#FF9300"] * 7 + ["#D70232"] * 5
     text_colors = ["#000000"] * 13 + ["#F2F2F2"] * 5
 
     # instantiate PyPizza class
