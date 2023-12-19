@@ -10,6 +10,8 @@ import data_proc as data
 import matplotlib.colors as mcolors
 import seaborn as sns
 import numpy as np
+import matplotlib.pyplot as plt
+from mplsoccer import PyPizza, add_image, FontManager
 
 def plot_player_comparison_per_90(df, player_of_interest, mins):
     # Get the position of the player of interest
@@ -1513,7 +1515,7 @@ def latest_gameweek_data(df, df_player, player_of_interest):
     return plt.gcf()
 
 def xg_differences_team(df):
-    
+
     teams = df['Squad'].unique()
     cols = ['Squad', 'npxG per 90_x','npxG per 90_y']
     df = df[cols]
@@ -1542,6 +1544,132 @@ def xg_differences_team(df):
 
     return plt.gcf()
 
+def pizza_plot(df, player_of_interest):
+
+    att_attr = ['G-PK','npxG','Ast','xAG','Sh', 'Shot Creating Actions', 'Progressive Passes', 'PrgR']
+    pos_attr = ['Touches', 'Successful Take-Ons', 'Progressive Carries', 'Disposessed', 'Passes Recieved']
+    def_attr = ['Tackles Won', 'Blocks', 'Shots Blocked', 'Tackles and Interceptions', 'Aerial Duels Won']
+    attributes = att_attr + pos_attr + def_attr
+
+    player_position = df[df['Player'] == player_of_interest]['Pos'].values[0]
+    position_df = df[df['Pos'] == player_position]
+    player_values = df[df['Player'] == player_of_interest][attributes].values.flatten()
+
+    merged_df_per_90 = position_df.copy()
+    percentile_values = [percentileofscore(merged_df_per_90[attribute], player_value) / 100 
+                            for attribute, player_value 
+                            in zip(attributes, player_values)]
+    percentile_values = [ elem * 100 for elem in percentile_values ]
+    percentile_values = [ '%.0f' % elem for elem in percentile_values ]
+    percentile_values = list(percentile_values)
+
+    # We will also add the first player value to the end of the list for the labels
+    player_values = list(player_values)
+    player_values += player_values[:1]
+
+    for i in range(0, len(percentile_values)): 
+        percentile_values[i] = int(percentile_values[i]) 
+
+    # parameter list
+    params = attributes
+    name_update = {
+        "G-PK": "Non-Penalty\nGoals", 
+        "Sh": "Shots", 
+        "Ast": "Assists",
+        "Shot Creating Actions": "Shot Creating\nActions",
+        "Progressive Passes": "Progressive\nPasses",
+        "PrgR": "Progressive Passes\nReceieved",
+        "Successful Take-Ons": "Successful\nTake-Ons",
+        "Progressive Carries": "Progressive\nCarries",
+        "Passes Recieved": "Passes\nRecieved",
+        "Tackles Won": "Tackles\nWon",
+        "Shots Blocked": "Shots\nBlocked",
+        "Tackles and Interceptions": "Tackles\nand Interceptions",
+        "Aerial Duels Won": "Aerial Duels\nWon",
+    }
+
+    params_updated = [name_update.get(param, param) for param in params]
+
+    # value list
+    values = percentile_values
+
+    slice_colors = ["#1A78CF"] * 8 + ["#FF9300"] * 5 + ["#D70232"] * 5
+    text_colors = ["#000000"] * 13 + ["#F2F2F2"] * 5
+
+    # instantiate PyPizza class
+    baker = PyPizza(
+        params=params_updated,                  # list of parameters
+        background_color="#222222",     # background color
+        straight_line_color="#000000",  # color for straight lines
+        straight_line_lw=1,             # linewidth for straight lines
+        last_circle_color="#000000",    # color for last line
+        last_circle_lw=1,               # linewidth of last circle
+        other_circle_lw=0,              # linewidth for other circles
+        inner_circle_size=5            # size of inner circle
+    )
+
+    # plot pizza
+    fig, ax = baker.make_pizza(
+        values,                          # list of values
+        figsize=(12, 10),                # adjust the figsize according to your need
+        color_blank_space="same",        # use the same color to fill blank space
+        slice_colors=slice_colors,       # color for individual slices
+        value_colors=text_colors,        # color for the value-text
+        value_bck_colors=slice_colors,   # color for the blank spaces
+        blank_alpha=0.4,                 # alpha for blank-space colors
+        kwargs_slices=dict(
+            edgecolor="#000000", zorder=2, linewidth=1
+        ),                               # values to be used when plotting slices
+        kwargs_params=dict(
+            color="#F2F2F2", fontsize=11,
+            va="center"
+        ),                               # values to be used when adding parameter labels
+        kwargs_values=dict(
+            color="#F2F2F2", fontsize=11,
+            zorder=3,
+            bbox=dict(
+                edgecolor="#000000", facecolor="cornflowerblue",
+                boxstyle="round,pad=0.2", lw=1
+            )
+        )                                # values to be used when adding parameter-values labels
+    )
+
+    # add title
+    fig.text(
+        0.515, 0.985, f"{player_of_interest}", size=16,
+        ha="center", color="#F2F2F2"
+    )
+
+    # add subtitle
+    fig.text(
+        0.515, 0.965,
+        "Percentile Rank vs Premier League Players In Same Position | Season 2023-24",
+        size=13,
+        ha="center", color="#F2F2F2"
+    )
+
+    # add text
+    fig.text(
+        0.34, 0.94, "Attacking        Possession       Defending", size=14, color="#F2F2F2"
+    )
+
+    # add rectangles
+    fig.patches.extend([
+        plt.Rectangle(
+            (0.31, 0.9325), 0.025, 0.021, fill=True, color="#1a78cf",
+            transform=fig.transFigure, figure=fig
+        ),
+        plt.Rectangle(
+            (0.43, 0.9325), 0.025, 0.021, fill=True, color="#ff9300",
+            transform=fig.transFigure, figure=fig
+        ),
+        plt.Rectangle(
+            (0.555, 0.9325), 0.025, 0.021, fill=True, color="#d70232",
+            transform=fig.transFigure, figure=fig
+        ),
+    ])
+
+    return plt.gcf()
 
 
 

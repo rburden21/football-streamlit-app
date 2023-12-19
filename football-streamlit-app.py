@@ -95,6 +95,9 @@ def page_one():
             with container2:
                 fig1 = gp.radar_chart_player(df_player, player_of_interest, gen_attributes, 'General')
                 st.pyplot(fig1) 
+        
+        fig1010 = gp.pizza_plot(df_player, player_of_interest)
+        st.pyplot(fig1010) 
 
     with tab2:
         st.header("Scatter Plots Analysis")
