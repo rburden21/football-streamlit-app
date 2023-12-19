@@ -1650,21 +1650,21 @@ def pizza_plot(df, player_of_interest):
 
     # add text
     fig.text(
-        0.34, 0.94, "Attacking        Possession       Defending", size=14, color="#F2F2F2"
+        0.34, 0.935, "Attacking        Possession       Defending", size=14, color="#F2F2F2"
     )
 
     # add rectangles
     fig.patches.extend([
         plt.Rectangle(
-            (0.31, 0.9325), 0.025, 0.021, fill=True, color="#1a78cf",
+            (0.30, 0.9325), 0.025, 0.021, fill=True, color="#1a78cf",
             transform=fig.transFigure, figure=fig
         ),
         plt.Rectangle(
-            (0.43, 0.9325), 0.025, 0.021, fill=True, color="#ff9300",
+            (0.45, 0.9325), 0.025, 0.021, fill=True, color="#ff9300",
             transform=fig.transFigure, figure=fig
         ),
         plt.Rectangle(
-            (0.555, 0.9325), 0.025, 0.021, fill=True, color="#d70232",
+            (0.60, 0.9325), 0.025, 0.021, fill=True, color="#d70232",
             transform=fig.transFigure, figure=fig
         ),
     ])
