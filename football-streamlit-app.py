@@ -64,7 +64,7 @@ teams = df_player[['Squad']].iloc[:, 0].sort_values().unique()
 default_player = "Mohamed Salah"
 default_index = np.where(all_players == default_player)[0]
 if default_index.size > 0:
-    default_index = default_index[0]
+    default_index = int(default_index[0])
 else:
     default_index = 0
 
