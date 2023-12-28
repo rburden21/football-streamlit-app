@@ -2,6 +2,7 @@ import data_proc as data
 import graph_functions as gp
 import matplotlib.pyplot as plt
 import streamlit as st
+import numpy as np
 
 # Set the default style parameters for all charts
 plt.rcParams['figure.facecolor'] = '#383838'  # Dark gray background color
@@ -61,8 +62,9 @@ teams = df_player[['Squad']].iloc[:, 0].sort_values().unique()
 
 # Specify the default player instead of doing this alphabetically
 default_player = "Mohamed Salah"
-if default_player in all_players:
-    default_index = all_players.index(default_player)
+default_index = np.where(all_players == default_player)[0]
+if default_index.size > 0:
+    default_index = default_index[0]
 else:
     default_index = 0
 
