@@ -59,6 +59,12 @@ df_player = df_player.loc[:, ~df_player.columns.duplicated()]
 all_players = df_player[['Player']].iloc[:, 0].sort_values().unique()
 teams = df_player[['Squad']].iloc[:, 0].sort_values().unique()
 
+# Specify the default player instead of doing this alphabetically
+default_player = "Mohamed Salah"
+if default_player in all_players:
+    default_index = all_players.index(default_player)
+else:
+    default_index = 0
 
 st.set_page_config(page_title='Dashboard', page_icon='', layout='wide')
 
@@ -66,7 +72,7 @@ def page_one():
     st.title("Individual Player Statistics")
 
     # Sidebar for page 1                              
-    player_of_interest = st.sidebar.selectbox('Select a player', options=all_players)
+    player_of_interest = st.sidebar.selectbox('Select a player', options=all_players, index=default_index)
 
     # Create a slider for the minimum minutes
     min_minutes = st.sidebar.slider(
