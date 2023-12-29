@@ -200,6 +200,14 @@ def page_two():
         fig5 = gp.plot_team_scatter(df_teams, team_of_interest)
         st.pyplot(fig5)
 
+
+        # Slider to select the number of recent matches
+        num_matches = st.slider('Select number of recent matches', min_value=1, max_value= start_week - 2, value=3)
+        fig550 = gp.plot_team_scatter_filtered(df_teams, team_of_interest, num_matches)
+        st.pyplot(fig550)
+
+
+
         fig501 = gp.shot_quality_team(df_teams_attacking, team_of_interest)
         st.pyplot(fig501)
 
