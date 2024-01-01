@@ -203,7 +203,7 @@ def page_two():
 
         # Slider to select the number of recent matches
         num_matches = st.slider('Select number of recent matches', min_value=1, max_value= start_week - 2, value=3)
-        fig550 = gp.plot_team_scatter_filtered(df_teams, team_of_interest, num_matches)
+        fig550 = gp.plot_team_scatter_filtered(df_teams_indvidual, team_of_interest, num_matches)
         st.pyplot(fig550)
 
 

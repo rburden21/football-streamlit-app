@@ -490,11 +490,11 @@ def plot_team_scatter(df, team):
 
 def get_last_matches_stats(df, num_matches):
     # Filter the last 'num_matches' for each team and calculate the average
-    print(df.head(5))
-    return df.groupby('Team').apply(lambda x: x.tail(num_matches).mean()).reset_index()
+    return df.groupby('team').apply(lambda x: x.tail(num_matches).mean()).reset_index()
 
 def plot_team_scatter_filtered(df, highlight_team, num_matches):
 
+    df = df[df['year']=='2023-2024']
     # Filter data based on selected number of matches for each team
     filtered_df = get_last_matches_stats(df, num_matches)
 
@@ -503,23 +503,23 @@ def plot_team_scatter_filtered(df, highlight_team, num_matches):
     ax.grid(True, linestyle='--', alpha=0.8)
 
     for i in range(len(filtered_df)):
-        color = 'red' if filtered_df['Team'][i] == highlight_team else 'green'
+        color = 'red' if filtered_df['team'][i] == highlight_team else 'green'
 
-        ax.scatter(filtered_df['npxG per 90'][i], 
-                   filtered_df['xA per 90'][i], 
+        ax.scatter(filtered_df['xg'][i], 
+                   filtered_df['xga'][i], 
                    s=100,
                    c=color,
                    edgecolor='black',
                    alpha=0.7)
 
-        ax.annotate(filtered_df['Team'][i],
-                    (filtered_df['npxG per 90'][i], filtered_df['xA per 90'][i]),
+        ax.annotate(filtered_df['team'][i],
+                    (filtered_df['xg'][i], filtered_df['xga'][i]),
                     xytext=(-10, -20),
                     textcoords='offset points',
                     fontsize=12)
 
-    npxG_avg = filtered_df['npxG per 90'].mean()
-    xA_avg = filtered_df['xA per 90'].mean()
+    npxG_avg = filtered_df['xg'].mean()
+    xA_avg = filtered_df['xga'].mean()
     plt.axhline(npxG_avg, color='grey', linestyle='--', alpha=0.5)
     plt.axvline(xA_avg, color='grey', linestyle='--', alpha=0.5)
 
@@ -531,7 +531,7 @@ def plot_team_scatter_filtered(df, highlight_team, num_matches):
     ax.spines['top'].set_visible(False)
     ax.invert_yaxis()
 
-    return fig
+    return plt.gcf()  # Return the current figure
 
 
 
