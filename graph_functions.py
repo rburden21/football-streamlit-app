@@ -1557,9 +1557,9 @@ def latest_gameweek_data(df, df_player, player_of_interest, gameweeks):
 
 
     # Adding labels and title
-    plt.xlabel('Summed Expected Assists (xA) - Last 6 Gameweeks')
-    plt.ylabel('Summed Expected Goals (xG) - Last 6 Gameweeks')
-    plt.title('Summed xG and xA over the Last 6 Gameweeks for All Players')
+    plt.xlabel(f'Summed Expected Assists (xA) - Last {gameweeks} Gameweeks')
+    plt.ylabel(f'Summed Expected Goals (xG) - Last {gameweeks} Gameweeks')
+    plt.title(f'Summed xG and xA over the Last {gameweeks} Gameweeks for All Players')
 
     # Show plot with a grid for better readability
     plt.grid(True)
