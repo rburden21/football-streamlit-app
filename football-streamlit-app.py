@@ -113,7 +113,8 @@ def page_one():
         fig2 = gp.plot_player_scatter(df_player, player_of_interest, min_minutes)
         st.pyplot(fig2) 
 
-        fig222 = gp.latest_gameweek_data(df_weekly_data, df_player, player_of_interest)
+        match_nums = st.slider('Select number of recent matches', min_value=1, max_value= start_week - 1, value=8)
+        fig222 = gp.latest_gameweek_data(df_weekly_data, df_player, player_of_interest, match_nums)
         st.pyplot(fig222)
 
         field1_list = ['npxG', 'xAG']
@@ -202,7 +203,7 @@ def page_two():
 
 
         # Slider to select the number of recent matches
-        num_matches = st.slider('Select number of recent matches', min_value=1, max_value= start_week - 2, value=3)
+        num_matches = st.slider('Select number of recent matches', min_value=1, max_value= start_week - 2, value=8)
         fig550 = gp.plot_team_scatter_filtered(df_teams_indvidual, team_of_interest, num_matches)
         st.pyplot(fig550)
 
