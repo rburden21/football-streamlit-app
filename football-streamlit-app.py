@@ -23,7 +23,7 @@ axes_settings = {
 
 plt.rc("axes", **axes_settings)
 
-start_week = 21
+start_week = 22
 
 gen_attributes = ['G-PK','npxG','Sh','Ast','xAG','npxG+xAG', 'Shot Creating Actions','Progressive Passes', 'PrgR']
 
