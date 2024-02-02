@@ -490,7 +490,7 @@ def plot_team_scatter(df, team):
 
 def get_last_matches_stats(df, num_matches):
     # Filter the last 'num_matches' for each team and calculate the average
-    return df.groupby('team').apply(lambda x: latest_gameweek_data.tail(num_matches).mean()).reset_index()
+    return df.groupby('team').apply(lambda x: x.tail(num_matches).mean()).reset_index()
 
 def plot_team_scatter_filtered(df, highlight_team, num_matches):
 
