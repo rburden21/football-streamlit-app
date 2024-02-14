@@ -1,0 +1,70 @@
+    #### OLD CODE
+    
+    # # Custom CSS to adjust the width of the main content area
+    # st.markdown(
+    #     """
+    #     <style>
+    #     .reportview-container {
+    #         max-width: 95%;  # You can adjust this value as you see fit
+    #     }
+    #     </style>
+    #     """,
+    #     unsafe_allow_html=True,
+    # )
+   
+   
+    # # Determine which seasons the selected player appears in
+    # seasons = []
+    # if player_of_interest in df_2021['Player'].unique():
+    #     seasons.append('2021')
+    # if player_of_interest in df_2022['Player'].unique():
+    #     seasons.append('2022')
+    # if player_of_interest in df_2023['Player'].unique():
+    #     seasons.append('2023')
+    # if player_of_interest in df_2024['Player'].unique():
+    #     seasons.append('2024')
+
+# #drop down for year if player exists there
+#     # Use Streamlit to create a season selection widget in the sidebar
+#     selected_season = st.selectbox('Select a season', options=seasons)
+#     # Depending on the selected season, use the corresponding data frame to create the scatter plot
+#     if selected_season == '2021':
+#         df = df_2021
+#     elif selected_season == '2022':
+#         df = df_2022
+#     elif selected_season == '2023':
+#         df = df_2023
+#     elif selected_season == '2024':
+#         df = df_2024
+
+    # # Create a list of the available options
+    # # Define the available options
+    # options = ["General", "Defensive", "Possession", "Shooting", "Passing"]
+
+    # # Create the dropdown menu and store the selected value
+    # selected_chart = st.selectbox("Select a chart", options)
+
+    # # Check which chart was selected and show the appropriate plot
+    # if selected_chart == "General":
+    #     fig15 = gp.radar_chart_player(df, player_of_interest, gen_attributes, 'General')
+    #     st.pyplot(fig15)  # Assume fig1 is the figure for the scatter plot
+
+    # elif selected_chart == "Defensive":
+    #     fig11 = gp.radar_chart_player(df, player_of_interest, def_attributes, 'Defensive')
+    #     st.pyplot(fig11)  # Assume fig1 is the figure for the scatter plot
+
+    # elif selected_chart == "Possession":
+    #     fig12 = gp.radar_chart_player(df, player_of_interest, pos_attributes, 'Possession')
+    #     st.pyplot(fig12)  # Assume fig1 is the figure for the scatter plot
+
+    # elif selected_chart == "Shooting":
+    #     fig13 = gp.radar_chart_player(df, player_of_interest, shoot_attributes, 'Shooting')
+    #     st.pyplot(fig13)
+
+    # elif selected_chart == "Passing":
+    #     fig14 = gp.radar_chart_player(df, player_of_interest, pass_attributes, 'Passing')
+    #     st.pyplot(fig14)
+
+    # else:
+    #     st.info("Please select a chart from the dropdown menu")
+
